@@ -110,10 +110,10 @@ resource "aws_instance" "backend_server" {
   instance_type          = var.backend_instance_type.type
   vpc_security_group_ids = [aws_security_group.trevo_security_group.id]
   subnet_id              = aws_subnet.public_subnet1.id
-  count                  = var.instance_type.count
+  count                  = var.backend_instance_type.count
 
   tags = {
-    Name = "${var.instance_type.name}${count.index}"
+    Name = "${var.backend_instance_type.name}${count.index}"
   }
 }
 
