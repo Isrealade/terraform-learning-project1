@@ -1,0 +1,29 @@
+backend_instance_type = {
+  count = 2
+  type  = "t3.micro"
+  name  = "backend_server_"
+}
+
+frontend_instance_type = {
+  count = 3
+  name  = "frontend_server_"
+  type  = "t3.micro"
+}
+
+vpc_name = "public_vpc"
+
+public_subnet_1 = "az1_subnet"
+
+public_subnet_2 = "az2_subnet"
+
+internet_gateway = "public_internet_gateway"
+
+security_group = {
+  name     = "security_group"
+  http     = "ipv4 http"
+  https    = "ipv4_https"
+  ssh      = "ssh_access"
+  outgoing = "outgoing_traffic"
+}
+
+trevo_s3_bucket = "trevo-s3-bucket"
