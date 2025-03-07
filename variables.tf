@@ -40,28 +40,12 @@ variable "internet_gateway" {
 variable "security_group" {
   description = "Allow HTTP/HTTPS traffic for frontend servers and SSH access for backend servers"
   type = object({
-    name     = string
-    http     = string
-    https    = string
-    ssh      = string
-    outgoing = string
+    name     = string  # Name of the security group
+    http     = string  # Enable inbound HTTP traffic for IPv4
+    https    = string  # Enable inbound HTTPS traffic for IPv4
+    ssh      = string  # Enable backend access through SSH
+    outgoing = string  # Enable outgoing traffic
   })
-}
-
-variable "security_group.http" {
-  description = "enable inbound http traffic for ipv4"
-}
-
-variable "security_group.https" {
-  description = "enable inbound https traffic for ipv4"
-}
-
-variable "security_group.outgoing" {
-  description = "enable outgoing traffic"
-}
-
-variable "security_group.ssh" {
-  description = "enable backend access through ssh"
 }
 
 variable "trevo_s3_bucket" {
