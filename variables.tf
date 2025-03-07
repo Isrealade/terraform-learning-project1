@@ -1,72 +1,71 @@
-variable "instance_type" {
+variable "backend_instance_type" {
   description = "ec2 instance details"
-  type        = string
-  default = "t3.micro"
+  type = object({
+    name  = string
+    type  = string
+    count = number
+  })
+}
+
+variable "frontend_instance_type" {
+  description = "ec2 instance details"
+  type = object({
+    name  = string
+    type  = string
+    count = number
+  })
 }
 
 variable "vpc_name" {
-  description = "Name of vpc"
+  description = "The name of vpc"
   type        = string
-  default     = "practice_vpc"
 }
 
-variable "public_subnet_name1" {
+
+variable "public_subnet_1" {
   description = "Name of subnet"
   type        = string
-  default     = "practice_subnet"
 }
 
-variable "public_subnet_name2" {
+variable "public_subnet_2" {
   description = "Name of subnet"
   type        = string
-  default     = "practice_subnet2"
 }
 
 variable "internet_gateway" {
   description = "Name of Internet gateway"
   type        = string
-  default     = "Internet_gateway"
 }
 
 variable "security_group" {
   description = "Allow HTTP/HTTPS traffic for frontend servers and SSH access for backend servers"
-  type        = string
-  default     = "security_group"
+  type = object({
+    name     = string
+    http     = string
+    https    = string
+    ssh      = string
+    outgoing = string
+  })
 }
 
-variable "allow_http_ipv4" {
+variable "security_group.http" {
   description = "enable inbound http traffic for ipv4"
-  type        = string
-  default     = "ipv4 http"
 }
 
-variable "allow_https_ipv4" {
+variable "security_group.https" {
   description = "enable inbound https traffic for ipv4"
-  type        = string
-  default     = "ipv4 https"
 }
 
-variable "allow_backend_access" {
+variable "security_group.outgoing" {
+  description = "enable outgoing traffic"
+}
+
+variable "security_group.ssh" {
   description = "enable backend access through ssh"
-  type        = string
-  default     = "ssh access"
-}
-
-variable "backend_server" {
-  description = "backend server"
-  type        = string
-  default     = "backend_server"
-}
-
-variable "frontend_server" {
-  description = "frontend server"
-  type        = string
-  default     = "frontend_server"
 }
 
 variable "trevo_s3_bucket" {
-  description = "s3 bucket"
+  description = "Name of s3 bucket"
   type        = string
-  default     = "trevo-s3-bucket"
 }
 
