@@ -27,7 +27,7 @@ resource "aws_subnet" "public_subnet1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.public_subnet_name1
+    Name = var.public_subnet_1
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_subnet" "public_subnet2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.public_subnet_name2
+    Name = var.public_subnet_2
   }
 }
 
@@ -51,11 +51,11 @@ resource "aws_internet_gateway" "trevo_internet_gateway" {
 }
 
 resource "aws_security_group" "trevo_security_group" {
-  name   = var.security_group
+  name   = var.security_group.name
   vpc_id = aws_vpc.trevo_vpc.id
 
   tags = {
-    Name = var.security_group
+    Name = var.security_group.name
   }
 }
 
@@ -67,7 +67,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
   to_port           = 80
 
   tags = {
-    name = var.allow_http_ipv4
+    name = var.security_group.http
   }
 }
 
@@ -79,14 +79,8 @@ resource "aws_vpc_security_group_ingress_rule" "allow_https_ipv4" {
   to_port           = 443
 
   tags = {
-    name = var.allow_https_ipv4
+    name = var.security_group.https
   }
-}
-
-resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic_ipv4" {
-  security_group_id = aws_security_group.trevo_security_group.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_backend_access" {
@@ -97,31 +91,41 @@ resource "aws_vpc_security_group_ingress_rule" "allow_backend_access" {
   to_port           = 22
 
   tags = {
-    name = var.allow_backend_access
+    name = var.security_group.ssh
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic_ipv4" {
+  security_group_id = aws_security_group.trevo_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # semantically equivalent to all ports
+
+  tags = {
+    name = var.security_group.outgoing
   }
 }
 
 resource "aws_instance" "backend_server" {
   ami                    = "ami-09a9858973b288bdd"
-  instance_type          = var.instance_type
+  instance_type          = var.backend_instance_type.type
   vpc_security_group_ids = [aws_security_group.trevo_security_group.id]
   subnet_id              = aws_subnet.public_subnet1.id
-  count                  = 2
+  count                  = var.instance_type.count
 
   tags = {
-    Name = "backend_server_${count.index}"
+    Name = "${var.instance_type.name}${count.index}"
   }
 }
 
 resource "aws_instance" "frontend_server" {
   ami                    = "ami-09a9858973b288bdd"
-  instance_type          = var.instance_type
+  instance_type          = var.frontend_instance_type.type
   vpc_security_group_ids = [aws_security_group.trevo_security_group.id]
   subnet_id              = aws_subnet.public_subnet1.id
-  count                  = 3
+  count                  = var.frontend_instance_type.count
 
   tags = {
-    Name = "frontend_server_${count.index}"
+    Name = "${var.frontend_instance_type.name}${count.index}"
   }
 }
 
