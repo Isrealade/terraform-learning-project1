@@ -4,6 +4,7 @@ variable "backend_instance_type" {
     name  = string
     type  = string
     count = number
+    ami   = string
   })
 }
 
@@ -13,6 +14,7 @@ variable "frontend_instance_type" {
     name  = string
     type  = string
     count = number
+    ami   = string
   })
 }
 
@@ -51,5 +53,12 @@ variable "security_group" {
 variable "trevo_s3_bucket" {
   description = "Name of s3 bucket"
   type        = string
+}
+
+variable "my_iam_user" {
+  type = object({
+    name        = string
+    description = string
+  })
 }
 
