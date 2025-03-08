@@ -2,12 +2,14 @@ backend_instance_type = {
   count = 2
   type  = "t3.micro"
   name  = "backend_server_"
+  ami   = "ami-09a9858973b288bdd"
 }
 
 frontend_instance_type = {
   count = 3
   name  = "frontend_server_"
   type  = "t3.micro"
+  ami   = "ami-09a9858973b288bdd"
 }
 
 vpc_name = "public_vpc"
@@ -27,3 +29,8 @@ security_group = {
 }
 
 trevo_s3_bucket = "trevo-s3-bucket"
+
+my_iam_user = {
+  name        = "BOB"
+  description = "CTO"
+}
