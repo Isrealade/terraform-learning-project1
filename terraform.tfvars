@@ -1,12 +1,12 @@
 backend_instance_type = {
-  count = 2
+  count = 4
   type  = "t3.micro"
   name  = "backend_server_"
   ami   = "ami-09a9858973b288bdd"
 }
 
 frontend_instance_type = {
-  count = 3
+  count = 2
   name  = "frontend_server_"
   type  = "t3.micro"
   ami   = "ami-09a9858973b288bdd"
