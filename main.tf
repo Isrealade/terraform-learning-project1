@@ -106,7 +106,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic_ipv4" {
 }
 
 resource "aws_instance" "backend_server" {
-  ami                    = "ami-09a9858973b288bdd"
+  ami                    = var.backend_instance_type.ami
   instance_type          = var.backend_instance_type.type
   vpc_security_group_ids = [aws_security_group.trevo_security_group.id]
   subnet_id              = aws_subnet.public_subnet1.id
@@ -118,7 +118,7 @@ resource "aws_instance" "backend_server" {
 }
 
 resource "aws_instance" "frontend_server" {
-  ami                    = "ami-09a9858973b288bdd"
+  ami                    = var.frontend_instance_type.ami
   instance_type          = var.frontend_instance_type.type
   vpc_security_group_ids = [aws_security_group.trevo_security_group.id]
   subnet_id              = aws_subnet.public_subnet1.id
@@ -136,4 +136,19 @@ resource "aws_s3_bucket" "trevo_bucket_s3" {
   tags = {
     Name = var.trevo_s3_bucket
   }
+}
+
+resource "aws_iam_user" "trevo_iamuser" {
+  name = var.my_iam_user.name
+  path = "/"
+
+  tags = {
+    description = "${var.my_iam_user.description}"
+
+  }
+}
+
+resource "aws_iam_user_policy_attachment" "iam_user_policy" {
+  user       = aws_iam_user.trevo_iamuser.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
