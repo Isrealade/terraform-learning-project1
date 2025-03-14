@@ -1,3 +1,12 @@
+variable "selected_region" {
+  type        = string
+  description = "Name of region"
+}
+
+variable "az_zones" {
+  type = list(string)
+}
+
 variable "backend_instance_type" {
   description = "ec2 instance details"
   type = object({
@@ -59,6 +68,12 @@ variable "my_iam_user" {
   type = object({
     name        = string
     description = string
+  })
+}
+
+variable "iam_policy" {
+  type = object({
+    policy_arn = string
   })
 }
 

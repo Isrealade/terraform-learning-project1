@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-north-1"
+  region = var.selected_region
 }
 
 resource "aws_vpc" "trevo_vpc" {
@@ -23,7 +23,7 @@ resource "aws_vpc" "trevo_vpc" {
 resource "aws_subnet" "public_subnet1" {
   vpc_id                  = aws_vpc.trevo_vpc.id
   cidr_block              = "10.0.1.0/24"
-  availability_zone       = "eu-north-1a"
+  availability_zone       = var.az_zones[0]
   map_public_ip_on_launch = true
 
   tags = {
@@ -34,7 +34,7 @@ resource "aws_subnet" "public_subnet1" {
 resource "aws_subnet" "public_subnet2" {
   vpc_id                  = aws_vpc.trevo_vpc.id
   cidr_block              = "10.0.2.0/24"
-  availability_zone       = "eu-north-1b"
+  availability_zone       = var.az_zones[1]
   map_public_ip_on_launch = true
 
   tags = {
@@ -150,5 +150,5 @@ resource "aws_iam_user" "trevo_iamuser" {
 
 resource "aws_iam_user_policy_attachment" "iam_user_policy" {
   user       = aws_iam_user.trevo_iamuser.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy_arn = var.iam_policy.policy_arn
 }

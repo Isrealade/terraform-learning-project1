@@ -1,3 +1,9 @@
+selected_region = "eu-north-1"
+
+az_zones = [
+  "eu-north-1a", "eu-north-1b"
+]
+
 backend_instance_type = {
   count = 4
   type  = "t3.micro"
@@ -33,4 +39,8 @@ trevo_s3_bucket = "trevo-s3-bucket"
 my_iam_user = {
   name        = "BOB"
   description = "CTO"
+}
+
+iam_policy = {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
